@@ -11,6 +11,7 @@ import {
   Play,
   RefreshCw
 } from "lucide-react";
+import API_BASE_URL from "../config";
 
 export default function MLDefense() {
   const [isRunning, setIsRunning] = useState(false);
@@ -19,7 +20,7 @@ export default function MLDefense() {
   const runFGSMDemo = async () => {
     setIsRunning(true);
     try {
-      const response = await fetch("http://127.0.0.1:8000/ml/fgsm-demo");
+      const response = await fetch(`${API_BASE_URL}/ml/fgsm-demo`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }

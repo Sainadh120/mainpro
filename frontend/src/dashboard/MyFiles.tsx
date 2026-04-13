@@ -4,6 +4,7 @@ import {
   encryptAESKeyWithRSA,
   importPublicKey,
 } from "../utils/crypto";
+import API_BASE_URL from "../config";
 
 interface SharedUser {
   username: string;
@@ -61,7 +62,7 @@ export default function MyFiles() {
       setSearching(true);
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/users/search?query=${encodeURIComponent(recipientSearch)}`,
+          `${API_BASE_URL}/users/search?query=${encodeURIComponent(recipientSearch)}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -86,7 +87,7 @@ export default function MyFiles() {
 
     setLoading(true);
     try {
-      const res = await fetch("http://127.0.0.1:8000/files/list", {
+      const res = await fetch(`${API_BASE_URL}/files/list`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -114,7 +115,7 @@ export default function MyFiles() {
       // This requires the original uploader to have stored the AES key
       // For simplicity, we'll use the server-side share endpoint
 
-      const res = await fetch(`http://127.0.0.1:8000/files/share/${file.id}?recipient_username=${encodeURIComponent(recipient.username)}`, {
+      const res = await fetch(`${API_BASE_URL}/files/share/${file.id}?recipient_username=${encodeURIComponent(recipient.username)}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -146,7 +147,7 @@ export default function MyFiles() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/files/revoke/${fileId}/${username}`,
+        `${API_BASE_URL}/files/revoke/${fileId}/${username}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -174,7 +175,7 @@ export default function MyFiles() {
     setError("");
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/files/delete/${file.id}`, {
+      const res = await fetch(`${API_BASE_URL}/files/delete/${file.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

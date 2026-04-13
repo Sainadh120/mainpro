@@ -9,6 +9,7 @@ import {
   storePrivateKey,
   storePublicKey,
 } from "../utils/crypto";
+import API_BASE_URL from "../config";
 
 interface SharedFile {
   id: number;
@@ -60,7 +61,7 @@ export default function SharedWithMe() {
       
       try {
         // Always sync keys from server to ensure we have the right private key
-        const res = await fetch("http://127.0.0.1:8000/users/my-keys", {
+        const res = await fetch(`${API_BASE_URL}/users/my-keys`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         
@@ -95,7 +96,7 @@ export default function SharedWithMe() {
     
     setScanning(true);
     try {
-      const res = await fetch("http://127.0.0.1:8000/ml/scan-all-shared", {
+      const res = await fetch(`${API_BASE_URL}/ml/scan-all-shared`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -120,7 +121,7 @@ export default function SharedWithMe() {
     
     setLoading(true);
     try {
-      const res = await fetch("http://127.0.0.1:8000/files/shared-with-me", {
+      const res = await fetch(`${API_BASE_URL}/files/shared-with-me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -149,7 +150,7 @@ export default function SharedWithMe() {
       setProgressStep("Downloading encrypted file...");
       setDecryptProgress(20);
 
-      const res = await fetch(`http://127.0.0.1:8000/files/download-e2e/${file.id}`, {
+      const res = await fetch(`${API_BASE_URL}/files/download-e2e/${file.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

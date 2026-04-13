@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import API_BASE_URL from "../config";
 
 // API functions
-const API_URL = 'http://127.0.0.1:8000';
 const loginUser = async (email, password) => {
   const formData = new FormData();
   formData.append('username', email);
   formData.append('password', password);
-  const response = await fetch(`${API_URL}/auth/token`, { method: 'POST', body: formData });
+  const response = await fetch(`${API_BASE_URL}/auth/token`, { method: 'POST', body: formData });
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({ detail: 'Login failed.' }));
     throw new Error(errorData.detail);
@@ -15,7 +15,7 @@ const loginUser = async (email, password) => {
   return response.json();
 };
 const registerUser = async (name, email, password) => {
-  const response = await fetch(`${API_URL}/users/register`, {
+  const response = await fetch(`${API_BASE_URL}/users/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ full_name: name, username: email, password: password }),

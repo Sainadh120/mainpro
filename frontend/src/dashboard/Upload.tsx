@@ -12,6 +12,7 @@ import {
   hasStoredKeys,
   getStoredPublicKey,
 } from "../utils/crypto";
+import API_BASE_URL from "../config";
 
 interface UserSearchResult {
   id: number;
@@ -59,7 +60,7 @@ export default function Upload() {
       setSearching(true);
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/users/search?query=${encodeURIComponent(recipientSearch)}`,
+          `${API_BASE_URL}/users/search?query=${encodeURIComponent(recipientSearch)}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -94,7 +95,7 @@ export default function Upload() {
       storePrivateKey(privateKeyPem);
 
       // Send public key to server
-      const res = await fetch("http://127.0.0.1:8000/users/public-key", {
+      const res = await fetch(`${API_BASE_URL}/users/public-key`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +164,7 @@ export default function Upload() {
         setProgressStep("Fetching recipient's public key...");
         setEncryptionProgress(50);
         const pubKeyRes = await fetch(
-          `http://127.0.0.1:8000/users/public-key/${selectedRecipient.username}`,
+          `${API_BASE_URL}/users/public-key/${selectedRecipient.username}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -189,7 +190,7 @@ export default function Upload() {
         formData.append("encrypted_aes_key", encryptedAesKey);
         formData.append("recipient_username", selectedRecipient.username);
 
-        const res = await fetch("http://127.0.0.1:8000/files/upload-e2e", {
+        const res = await fetch(`${API_BASE_URL}/files/upload-e2e`, {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
           body: formData,
@@ -220,7 +221,7 @@ export default function Upload() {
 
         formData.append("file", file);
 
-        const res = await fetch("http://127.0.0.1:8000/files/upload", {
+        const res = await fetch(`${API_BASE_URL}/files/upload`, {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
           body: formData,

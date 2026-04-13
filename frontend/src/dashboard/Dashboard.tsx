@@ -22,6 +22,7 @@ import {
   hasStoredKeys,
   getStoredPublicKey,
 } from "../utils/crypto";
+import API_BASE_URL from "../config";
 
 export default function Dashboard() {
   const { username, token } = useAuth();
@@ -38,7 +39,7 @@ export default function Dashboard() {
       
       try {
         // First, try to get keys from server
-        const res = await fetch("http://127.0.0.1:8000/users/my-keys", {
+        const res = await fetch(`${API_BASE_URL}/users/my-keys`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         
@@ -59,7 +60,7 @@ export default function Dashboard() {
           const localPubKey = getStoredPublicKey();
           if (localPubKey) {
             // Sync local keys to server
-            await fetch("http://127.0.0.1:8000/users/public-key", {
+            await fetch(`${API_BASE_URL}/users/public-key`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -82,7 +83,7 @@ export default function Dashboard() {
         storePrivateKey(privateKeyPem);
 
         // Send to server (both keys for backup)
-        await fetch("http://127.0.0.1:8000/users/sync-keys", {
+        await fetch(`${API_BASE_URL}/users/sync-keys`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -111,10 +112,10 @@ export default function Dashboard() {
       
       try {
         const [myFilesRes, sharedRes] = await Promise.all([
-          fetch("http://127.0.0.1:8000/files/list", {
+          fetch(`${API_BASE_URL}/files/list`, {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          fetch("http://127.0.0.1:8000/files/shared-with-me", {
+          fetch(`${API_BASE_URL}/files/shared-with-me`, {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);

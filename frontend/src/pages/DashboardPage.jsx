@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 // 1. Import the Download icon
 import { Upload, FileText, Share2, Trash2, X, AlertCircle, Download } from 'lucide-react';
-
-const API_URL = 'http://127.0.0.1:8000';
+import API_BASE_URL from '../config';
 
 const apiService = {
   authFetch: async (url, options = {}, isDownload = false) => {
@@ -11,7 +10,7 @@ const apiService = {
     if (!(options.body instanceof FormData)) {
       headers['Content-Type'] = 'application/json';
     }
-    const response = await fetch(`${API_URL}${url}`, { ...options, headers });
+    const response = await fetch(`${API_BASE_URL}${url}`, { ...options, headers });
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({ detail: 'An unknown server error occurred.' }));

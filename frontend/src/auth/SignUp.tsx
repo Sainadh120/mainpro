@@ -8,6 +8,7 @@ import {
   storePrivateKey,
   storePublicKey,
 } from "../utils/crypto";
+import API_BASE_URL from "../config";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -53,7 +54,7 @@ const SignUp = () => {
 
     try {
       // Step 1: Register the user
-      const response = await fetch("http://127.0.0.1:8000/users/register", {
+      const response = await fetch(`${API_BASE_URL}/users/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -74,7 +75,7 @@ const SignUp = () => {
       loginFormData.append("username", formData.username);
       loginFormData.append("password", formData.password);
 
-      const loginRes = await fetch("http://127.0.0.1:8000/auth/token", {
+      const loginRes = await fetch(`${API_BASE_URL}/auth/token`, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: loginFormData.toString(),
@@ -94,7 +95,7 @@ const SignUp = () => {
         storePrivateKey(privateKeyPem);
 
         // Step 4: Send public key to server
-        await fetch("http://127.0.0.1:8000/users/public-key", {
+        await fetch(`${API_BASE_URL}/users/public-key`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
